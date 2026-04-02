@@ -165,14 +165,31 @@
         });
     }
 
+    let cancelActiveWatch = null;
+
     function watchElement(el) {
+        if (cancelActiveWatch) cancelActiveWatch();
+
+        const prevOutline = el.style.outline;
+        const prevOutlineOffset = el.style.outlineOffset;
+
         console.log('Watching element:', el);
         el.style.outline = '8px solid red';
         el.style.outlineOffset = '-4px';
 
         const rect = el.getBoundingClientRect();
         const badge = document.createElement('div');
-        badge.textContent = 'Watching';
+
+        const label = document.createTextNode('Watching');
+        const closeBtn = document.createElement('span');
+        closeBtn.textContent = ' ×';
+        closeBtn.style.cssText = `
+            cursor: pointer;
+            margin-left: 4px;
+        `;
+
+        badge.appendChild(label);
+        badge.appendChild(closeBtn);
         badge.style.cssText = `
             position: absolute;
             left: ${rect.left + window.scrollX}px;
@@ -182,13 +199,21 @@
             font: bold 11px monospace;
             padding: 2px 6px;
             z-index: 2147483647;
-            pointer-events: none;
         `;
         document.body.appendChild(badge);
 
-        function removeBadge() {
+        function cleanup() {
             badge.remove();
+            el.style.outline = prevOutline;
+            el.style.outlineOffset = prevOutlineOffset;
+            cancelActiveWatch = null;
         }
+
+        closeBtn.addEventListener('click', () => {
+            clearInterval(interval);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            cleanup();
+        });
 
         function note(frequency) {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -221,7 +246,7 @@
         // Page is refreshing, closing, or changing location
         function handleBeforeUnload() {
             chord();
-            removeBadge();
+            cleanup();
         }
 
         window.addEventListener('beforeunload', handleBeforeUnload);
@@ -230,15 +255,21 @@
             // Element was removed
             if (!document.contains(el)) {
                 chord();
-                removeBadge();
                 console.log('Element removed:', el);
 
                 clearInterval(interval);
                 window.removeEventListener('beforeunload', handleBeforeUnload);
+                cleanup();
 
                 return;
             }
-        }, 500);
+        }, 250);
+
+        cancelActiveWatch = () => {
+            clearInterval(interval);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            cleanup();
+        };
     }
 
     // Right-click menu support
