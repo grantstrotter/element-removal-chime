@@ -19,14 +19,14 @@ This extension currently supports Chromium-based browsers (Chrome, Brave, Edge).
 ## How It Works
 
 1. Right-click on an element you want to watch
-2. Select **“Element Removal Chime**  
+2. Select **“Element Removal Chime**
 3. A menu will appear showing:
    - the clicked element
-   - several of its ancestor elements  
+   - several of its ancestor elements
 4. Choose the element you want to watch
 
 Once selected:
-- A watcher is attached to that element  
+- A watcher is attached to that element
 - A chime will play when:
-  - The element is removed from the DOM  
-  - The page unloads (refresh, navigation, close)
+  - the element is removed from the DOM, or
+  - the page unloads (refresh, navigation, close)
