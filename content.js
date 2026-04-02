@@ -165,6 +165,34 @@
         });
     }
 
+    function note(frequency) {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.frequency.value = frequency;
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        const now = ctx.currentTime;
+
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(0.75, now + 0.05); // attack
+        gain.gain.linearRampToValueAtTime(0, now + 0.49); // release
+
+        osc.start(now);
+        osc.stop(now + 0.5);
+
+        osc.onended = () => ctx.close();
+    }
+
+    function chord() {
+        note(500);
+        note(600);
+        note(800);
+    }
+
     let cancelActiveWatch = null;
 
     function watchElement(el) {
@@ -214,34 +242,6 @@
             window.removeEventListener('beforeunload', handleBeforeUnload);
             cleanup();
         });
-
-        function note(frequency) {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-
-            osc.frequency.value = frequency;
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            const now = ctx.currentTime;
-
-            gain.gain.setValueAtTime(0, now);
-            gain.gain.linearRampToValueAtTime(0.75, now + 0.05); // attack
-            gain.gain.linearRampToValueAtTime(0, now + 0.49); // release
-
-            osc.start(now);
-            osc.stop(now + 0.5);
-
-            osc.onended = () => ctx.close();
-        }
-
-        function chord() {
-            note(500);
-            note(600);
-            note(800);
-        }
 
         // Page is refreshing, closing, or changing location
         function handleBeforeUnload() {
