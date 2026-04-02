@@ -167,7 +167,7 @@
 
     function watchElement(el) {
         console.log('Watching element:', el);
-        el.style.outline = '4px solid red';
+        el.style.outline = '8px solid red';
         el.style.outlineOffset = '-4px';
 
         function note(frequency) {
