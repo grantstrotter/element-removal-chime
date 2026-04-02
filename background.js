@@ -1,7 +1,7 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: 'watch-element',
-    title: 'Element Removal Alert',
+    title: 'Element Removal Chime',
     contexts: ['all']
   });
 });
