@@ -67,9 +67,7 @@
         }
     }
 
-    function showAncestorMenu(elements, x, y) {
-        dismissMenu();
-
+    function buildMenu(elements) {
         const menu = document.createElement('div');
         menu.style.cssText = `
             position: fixed;
@@ -132,18 +130,20 @@
             menu.appendChild(row);
         }
 
+        return menu;
+    }
+
+    function showAncestorMenu(elements, x, y) {
+        dismissMenu();
+
+        const menu = buildMenu(elements);
         document.body.appendChild(menu);
         activeMenu = menu;
 
-        const menuWidth = menu.offsetWidth;
-        const menuHeight = menu.offsetHeight;
-        console.log({
-            x, innerWidth: window.innerWidth, menuWidth, MENU_EDGE_MARGIN
-        });
         const viewportWidth = document.documentElement.clientWidth;
         const viewportHeight = document.documentElement.clientHeight;
-        const left = Math.min(x, viewportWidth - menuWidth - MENU_EDGE_MARGIN);
-        const top = Math.min(y, viewportHeight - menuHeight - MENU_EDGE_MARGIN);
+        const left = Math.min(x, viewportWidth - menu.offsetWidth - MENU_EDGE_MARGIN);
+        const top = Math.min(y, viewportHeight - menu.offsetHeight - MENU_EDGE_MARGIN);
         menu.style.left = `${left}px`;
         menu.style.top = `${top}px`;
         menu.style.visibility = 'visible';
