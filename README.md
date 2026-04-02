@@ -19,7 +19,7 @@ This extension currently supports Chromium-based browsers (Chrome, Brave, Edge).
 ## How It Works
 
 1. Right-click on an element you want to watch
-2. Select **“Element Removal Chime**
+2. Select **"Element Removal Chime"**
 3. A menu will appear showing:
    - the clicked element
    - several of its ancestor elements
