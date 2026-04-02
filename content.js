@@ -1,6 +1,27 @@
 (function () {
     const MENU_MAX_WIDTH = 375;
     const MENU_EDGE_MARGIN = 10;
+
+    const THEMES = {
+        light: {
+            background: '#ffffff',
+            border: '#cccccc',
+            text: '#000000',
+            hover: '#eeeeee',
+            shadow: 'rgba(0, 0, 0, 0.2)',
+        },
+        dark: {
+            background: '#1e1e1e',
+            border: '#444444',
+            text: '#e0e0e0',
+            hover: '#2e2e2e',
+            shadow: 'rgba(0, 0, 0, 0.3)',
+        },
+    };
+
+    const theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? THEMES.dark
+        : THEMES.light;
     
     let lastRightClick = {
         element: null,
@@ -54,13 +75,15 @@
             position: fixed;
             z-index: 2147483647;
             visibility: hidden;
-            background: #fff;
-            border: 1px solid #ccc;
+            background: ${theme.background};
+            border: 1px solid ${theme.border};
+            color: ${theme.text};
             font: 13px monospace;
-            padding: 4px 0;
-            box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+            box-shadow: 2px 2px 12px ${theme.shadow};
             width: ${MENU_MAX_WIDTH}px;
             box-sizing: border-box;
+            border-radius: 8px;
+            overflow: hidden;
         `;
 
         const heading = document.createElement('div');
@@ -69,8 +92,7 @@
             padding: 8px 12px 6px;
             font-size: 14px;
             font-weight: bold;
-            border-bottom: 1px solid #ccc;
-            margin-bottom: 4px;
+            border-bottom: 1px solid ${theme.border};
             width: 100%;
             max-width: 100%;
             box-sizing: border-box;
@@ -100,7 +122,7 @@
                 max-width: 100%;
                 box-sizing: border-box;
             `;
-            row.addEventListener('mouseenter', () => row.style.background = '#eee');
+            row.addEventListener('mouseenter', () => row.style.background = theme.hover);
             row.addEventListener('mouseleave', () => row.style.background = '');
             row.addEventListener('click', (e) => {
                 e.stopPropagation();
