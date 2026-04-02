@@ -1,4 +1,4 @@
-# Element Removal Alert
+# Element Removal Alert (Chrome Extension)
 
 Receive an audible alert when a DOM element is removed or when the page unloads.
 
