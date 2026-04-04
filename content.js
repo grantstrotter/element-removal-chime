@@ -72,6 +72,7 @@
         menu.style.cssText = `
             position: fixed;
             z-index: 2147483647;
+            text-align: left;
             visibility: hidden;
             background: ${theme.background};
             border: 1px solid ${theme.border};
@@ -263,7 +264,7 @@
 
                 return;
             }
-        }, 250);
+        }, 250); // Relatively short interval is needed to make a chirp before unload
 
         cancelActiveWatch = () => {
             clearInterval(interval);
