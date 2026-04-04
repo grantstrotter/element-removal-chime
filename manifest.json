@@ -14,8 +14,7 @@
     }
   },
   "permissions": [
-    "contextMenus",
-    "scripting"
+    "contextMenus"
   ],
   "host_permissions": [
     "<all_urls>"
